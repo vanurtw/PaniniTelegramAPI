@@ -6,26 +6,20 @@ from rest_framework import status
 from users.models import TelegramUserModel
 from django.shortcuts import get_object_or_404
 from .models import Token
+from .services import TelegramAuthService
 
 
 class TelegramAuthView(APIView):
+    permission_classes = []
+    authentication_classes = []
+
     def post(self, request):
         serializer = TelegramAuthSerializer(data=request.data)
         if serializer.is_valid():
             user_data = serializer.validated_data['user_data']
-            users_telegram = TelegramUserModel.objects.filter(username=user_data['username'])
-            if not users_telegram.exists():
-                user_telegram = TelegramUserModel.objects.create(
-                    user_id=user_data['id'],
-                    username=user_data['username'],
-                    first_name=user_data['first_name'],
-                    last_name=user_data['last_name']
-                )
-            else:
-                user_telegram = users_telegram[0]
-            token = Token.objects.create(user_telegram=user_telegram)
+            auth_result = TelegramAuthService.process_telegram_auth(user_data)
             return Response({
-                'token': token.key,
-                'user': user_telegram.id
+                'token': auth_result['token'],
+                'user': auth_result['user_id']
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

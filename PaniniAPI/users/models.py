@@ -45,6 +45,8 @@ class TelegramUserModel(models.Model):
         auto_now_add=True
     )
 
+    is_authenticated = True
+
     class Meta:
         verbose_name = 'Модель пользователя телеграмм аккаунта'
         verbose_name_plural = 'Модели пользователя телеграмм аккаунта'

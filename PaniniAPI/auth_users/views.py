@@ -3,9 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import TelegramAuthSerializer
 from rest_framework import status
-from users.models import TelegramUserModel
-from django.shortcuts import get_object_or_404
-from .models import Token
+from rest_framework.permissions import IsAuthenticated
 from .services import TelegramAuthService
 
 
@@ -23,3 +21,11 @@ class TelegramAuthView(APIView):
                 'user': auth_result['user_id']
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TestAPIVIew(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        print(request.user)
+        return Response("ok")

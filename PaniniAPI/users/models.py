@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.validators import MinValueValidator
 
 
 class MyUserManager(UserManager):
@@ -50,6 +51,31 @@ class TelegramUserModel(models.Model):
     class Meta:
         verbose_name = 'Модель пользователя телеграмм аккаунта'
         verbose_name_plural = 'Модели пользователя телеграмм аккаунта'
+
+
+class ProfileTelegramUser(models.Model):
+    telegram_user = models.OneToOneField(
+        'TelegramUserModel',
+        verbose_name='Пользователь телеграм',
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    coins = models.IntegerField(
+        verbose_name='Монеты',
+        default=0,
+        validators=[MinValueValidator(0, message='Количество монет не может быть отрицательным')]
+    )
+    is_farm = models.BooleanField(
+        verbose_name='Фарм-флаг',
+        default=False
+    )
+
+    def __str__(self):
+        return f"Профиль {self.telegram_user}"
+
+    class Meta:
+        verbose_name = 'Профиль пользователя'
+        verbose_name_plural = 'Профили пользователей'
 
 
 class MyUserModel(AbstractUser):

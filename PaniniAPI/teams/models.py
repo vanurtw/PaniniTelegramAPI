@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
 from teams.services import upload_photo_player
 
 
@@ -19,6 +18,10 @@ class Club(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Футбольный клуб'
+        verbose_name_plural = 'Футбольные клубы'
 
 
 class Player(models.Model):
@@ -70,3 +73,7 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Футболист'
+        verbose_name_plural = 'Футболисты'

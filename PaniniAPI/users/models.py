@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import MinValueValidator
+from teams.models import Player
 
 
 class MyUserManager(UserManager):
@@ -48,9 +49,12 @@ class TelegramUserModel(models.Model):
 
     is_authenticated = True
 
+    def __str__(self):
+        return f"TG_user_{self.username}_{self.user_id}"
+
     class Meta:
-        verbose_name = 'Модель пользователя телеграмм аккаунта'
-        verbose_name_plural = 'Модели пользователя телеграмм аккаунта'
+        verbose_name = 'Пользователя телеграмм аккаунта'
+        verbose_name_plural = 'Пользователя телеграмм аккаунта'
 
 
 class ProfileTelegramUser(models.Model):
@@ -76,6 +80,33 @@ class ProfileTelegramUser(models.Model):
     class Meta:
         verbose_name = 'Профиль пользователя'
         verbose_name_plural = 'Профили пользователей'
+
+
+class UserFootballerCollection(models.Model):
+    '''
+    Коллекция футбольных карточек пользователя
+    '''
+    telegram_user = models.ForeignKey(
+        to=ProfileTelegramUser,
+        verbose_name='Профиль пользователя',
+        on_delete=models.CASCADE,
+        related_name='footballer_cards'
+    )
+    player = models.ForeignKey(
+        to=Player,
+        verbose_name='Футболист',
+        related_name='telegram_profiles',
+        on_delete=models.CASCADE
+    )
+    obtained_date = models.DateField(
+        verbose_name='Дата получения',
+        auto_now_add=True
+    )
+
+    class Meta:
+        unique_together = ['telegram_user', 'player']
+        verbose_name = 'Коллекция'
+        verbose_name_plural = 'Коллекция'
 
 
 class MyUserModel(AbstractUser):

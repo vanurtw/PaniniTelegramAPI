@@ -21,11 +21,3 @@ class TelegramAuthView(APIView):
                 'user': auth_result['user_id']
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class TestAPIVIew(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        print(request.user)
-        return Response("ok")

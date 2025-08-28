@@ -5,8 +5,6 @@ from .models import Token
 class TelegramAuthService:
     @staticmethod
     def process_telegram_auth(user_data):
-        user_id = user_data['id']
-        username = user_data['username']
         user_telegram, created = TelegramUserModel.objects.get_or_create(
             user_id=user_data['id'],
             username=user_data['username'],

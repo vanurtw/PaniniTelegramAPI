@@ -6,8 +6,12 @@ def upload_photo_player(instance, file):
     '''
     Построение пути для загрузки фото футболистов
     '''
-
-    club_slug = slugify(instance.club.name)
-    player_slug = slugify(instance.name)
+    club_name = instance.club.name
+    club_slug = slugify(club_name)
+    if not club_slug:
+        club_slug = club_name
     filename, typ = file.split('.')
-    return f"clubs/{club_slug}/{player_slug}/{slugify(filename)}.{typ}"
+    filename_slug = slugify(filename)
+    if not filename_slug:
+        filename_slug = filename
+    return f"clubs/{club_slug}/{filename_slug}.{typ}"

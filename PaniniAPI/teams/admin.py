@@ -4,7 +4,7 @@ from .models import Club, Player
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
-    pass
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Player)

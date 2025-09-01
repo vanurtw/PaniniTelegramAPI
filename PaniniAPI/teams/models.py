@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from teams.services import upload_photo_player
+from transliterate import slugify
 
 
 class Club(models.Model):
@@ -15,6 +16,15 @@ class Club(models.Model):
         verbose_name='Год основания',
         validators=[MinValueValidator(1500)]
     )
+    slug = models.SlugField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.name)
+            if not slug:
+                slug = self.name.lower()
+            self.slug = slug
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

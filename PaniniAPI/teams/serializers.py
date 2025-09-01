@@ -16,7 +16,7 @@ class PlayerSerializer(serializers.ModelSerializer):
     in_stock = serializers.SerializerMethodField()
 
     def get_in_stock(self, instance):
-        return instance.id in self.context['tg_user_players']
+        return instance.id in self.context.get('tg_user_players', [])
 
     class Meta:
         model = Player

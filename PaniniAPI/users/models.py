@@ -103,6 +103,9 @@ class UserFootballerCollection(models.Model):
         auto_now_add=True
     )
 
+    def __str__(self):
+        return f"{self.telegram_user}---{self.player}"
+
     class Meta:
         unique_together = ['telegram_user', 'player']
         verbose_name = 'Коллекция'

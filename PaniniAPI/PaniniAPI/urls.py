@@ -8,6 +8,8 @@ urlpatterns = [
     path('api/v1/', include('users.urls')),
     path('api/v1/', include('auth_users.urls')),
     path('api/v1/', include('teams.urls')),
+    path('api/v1/', include('purchase.urls')),
+
 ]
 
 if settings.DEBUG:

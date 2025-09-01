@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'users',
     'teams',
+    'purchase',
     'auth_users',
     'rest_framework',
 ]

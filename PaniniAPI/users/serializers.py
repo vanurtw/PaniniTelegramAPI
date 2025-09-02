@@ -9,6 +9,8 @@ class ProfileUserSerializer(serializers.ModelSerializer):
             'id',
             'coins',
             'is_farm',
+            'start_datatime_farm',
+            'end_datetime_farm',
         ]
 
 

@@ -1,7 +1,9 @@
 from rest_framework.urls import path
-from .views import ProfileTelegramUser
+from .views import ProfileTelegramUser, FarmStartUserAPIView, FarmEndUserAPIView
 
 urlpatterns = [
     path('profile/', ProfileTelegramUser.as_view()),
+    path('farm/start/', FarmStartUserAPIView.as_view()),
+    path('farm/collect/', FarmEndUserAPIView.as_view())
 
 ]

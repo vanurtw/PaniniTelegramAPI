@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import MinValueValidator
 from teams.models import Player
+from django.utils import timezone
 
 
 class MyUserManager(UserManager):
@@ -73,6 +74,46 @@ class ProfileTelegramUser(models.Model):
         verbose_name='Фарм-флаг',
         default=False
     )
+    start_datatime_farm = models.DateTimeField(
+        verbose_name="Время начала фарма",
+        null=True,
+        blank=True
+    )
+    end_datetime_farm = models.DateTimeField(
+        verbose_name="Время окончания фарма",
+        null=True,
+        blank=True
+    )
+
+    @property
+    def coins_available(self):
+        if not self.is_farm or not self.end_datetime_farm:
+            return 0
+
+        now = timezone.now()
+        if now >= self.end_datetime_farm:
+            return 100
+        print("Пытались забрать фарм!")
+        return 0
+
+    def start_farm(self, duration_hours=8):
+        now = timezone.now()
+        self.start_datatime_farm = now
+        self.end_datetime_farm = now + timezone.timedelta(hours=duration_hours)
+        self.is_farm = True
+        self.save()
+
+    def collect_coins(self):
+        if not self.is_farm:
+            return 0
+
+        coins_to_collected = self.coins_available
+        self.coins += coins_to_collected
+        self.is_farm = False
+        self.start_datatime_farm = None
+        self.end_datetime_farm = None
+        self.save()
+        return coins_to_collected
 
     def __str__(self):
         return f"Профиль {self.telegram_user}"

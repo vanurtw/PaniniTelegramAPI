@@ -7,14 +7,30 @@ from users.models import ProfileTelegramUser
 from django.db.models import F, Q
 from rest_framework import status
 from teams.models import Player
-from random import choices, choice
+from random import choice
 from teams.serializers import PlayerSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class PurchasePlayerAPIView(GenericAPIView):
     serializer_class = PlayerSerializer
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_summary="Покупка карточек за игровые очки",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={},
+            description="Тело запроса не требуется"
+        ),
+        responses={
+            200: serializer_class(),
+            400: openapi.Response(description='Ошибка валидации'),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Коллекция карточек"]
+    )
     def post(self, request):
         '''
         Покупка карточки футболиста за игровые очки(монеты)

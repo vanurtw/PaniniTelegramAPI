@@ -26,6 +26,10 @@ class CollectionsAPIView(GenericAPIView):
                 required=True
             )
         ],
+        responses={
+            200: serializer_class(),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
         tags=['Коллекция карточек']
     )
     def get(self, request, slug):

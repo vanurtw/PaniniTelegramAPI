@@ -7,7 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 
 class ProfileTelegramUser(GenericAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = TelegramUserSerializer
 
     def get(self, request):
-        serializer = self
-
+        serializer = self.serializer_class(request.user)
+        print(serializer)
+        return Response(serializer.data)

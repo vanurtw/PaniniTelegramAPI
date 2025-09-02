@@ -13,10 +13,10 @@ class ProfileUserSerializer(serializers.ModelSerializer):
 
 
 class TelegramUserSerializer(serializers.ModelSerializer):
-    profile = ProfileUserSerializer(source='profile')
+    profile = ProfileUserSerializer()
 
     class Meta:
-        model = TelegramUserModel,
+        model = TelegramUserModel
         fields = [
             'id',
             'username',

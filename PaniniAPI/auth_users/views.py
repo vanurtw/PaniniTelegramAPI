@@ -23,7 +23,12 @@ class TelegramAuthView(GenericAPIView):
         В тело запроса передается InitData, возвращается token и информация о пользователе
         ''',
         request_body=TelegramAuthSerializer,
-        # responses={200: LoginResponseSerializer}
+        responses={
+            200: LoginResponseSerializer(),
+            400: openapi.Response(description='Ошибка валидации'),
+
+        },
+        tags=['Авторизация']
 
     )
     def post(self, request):

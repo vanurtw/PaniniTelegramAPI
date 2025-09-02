@@ -1,9 +1,5 @@
 from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-
-from users.serializers import TelegramUserSerializer
 from .serializers import TelegramAuthSerializer, LoginResponseSerializer
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
@@ -41,7 +37,5 @@ class TelegramAuthView(GenericAPIView):
                 'user': auth_result['user']
             }
             serializer_response = LoginResponseSerializer(data_res)
-            print(serializer_response.data)
             return Response(serializer_response.data)
-            # return Response(data_res)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

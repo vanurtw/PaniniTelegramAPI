@@ -14,5 +14,5 @@ class TelegramAuthService:
         token, _ = Token.objects.get_or_create(user_telegram=user_telegram)
         return {
             'token': token.key,
-            'user_id': user_telegram.user_id,
+            'user': user_telegram,
         }

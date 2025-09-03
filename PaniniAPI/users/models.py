@@ -96,16 +96,18 @@ class ProfileTelegramUser(models.Model):
 
     @property
     def coins_available(self):
+        '''Начисление монет по завершению фарма'''
         if not self.is_farm or not self.end_datetime_farm:
             return 0
 
         now = timezone.now()
         if now >= self.end_datetime_farm:
-            return 100
+            return 1000
         print("Пытались забрать фарм!")
         return 0
 
     def start_farm(self):
+        '''Начать фарм'''
         now = timezone.now()
         print(f"Время сервера - {now}")
         self.start_datatime_farm = now
@@ -114,6 +116,7 @@ class ProfileTelegramUser(models.Model):
         self.save()
 
     def collect_coins(self):
+        '''Закончить фарм'''
         if not self.is_farm:
             return 0
 

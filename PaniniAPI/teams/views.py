@@ -1,10 +1,11 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import PlayerSerializer
+from .serializers import PlayerSerializer, ClubSerializer
 from rest_framework.response import Response
-from .models import Player
+from .models import Player, Club
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework import status
 
 
 class CollectionsAPIView(GenericAPIView):
@@ -36,4 +37,26 @@ class CollectionsAPIView(GenericAPIView):
         players = Player.objects.filter(club__slug=slug)
         tg_user_players = request.user.profile.footballer_cards.values_list('player_id', flat=True)
         serializer = self.serializer_class(players, many=True, context={'tg_user_players': tg_user_players})
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FootballClubAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ClubSerializer
+
+    @swagger_auto_schema(
+        operation_summary='Получить все футбольные клубы',
+        operation_description='''
+        Возвращает всю информацию о футбольных клубах.
+        Доступно только для авторизованных пользователей.
+        ''',
+        responses={
+            200: serializer_class(),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Футбольные клубы"]
+    )
+    def get(self, request):
+        clubs = Club.objects.all()
+        serializer = self.serializer_class(clubs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

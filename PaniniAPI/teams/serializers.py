@@ -8,7 +8,8 @@ class ClubSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'founded'
+            'founded',
+            'slug'
         ]
 
 
@@ -31,8 +32,3 @@ class PlayerSerializer(serializers.ModelSerializer):
             'photo',
             'in_stock'
         ]
-
-
-class CollectionsPlayersSerializer(serializers.Serializer):
-    # player = serializers.CharField()
-    club = ClubSerializer()

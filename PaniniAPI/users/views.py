@@ -2,7 +2,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import TelegramUserSerializer
+from .serializers import TelegramUserSerializer, FarmSerializer
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -31,7 +31,10 @@ class ProfileTelegramUser(GenericAPIView):
         return Response(serializer.data)
 
 
-class FarmStartUserAPIView(APIView):
+class FarmStartUserAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = None
+
     def post(self, request):
         profile = request.user.profile
         profile.start_farm()
@@ -50,3 +53,12 @@ class FarmEndUserAPIView(APIView):
             "coins": coins
 
         })
+
+
+class FarmAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FarmSerializer
+
+    def get(self, request):
+        serializer = self.serializer_class(request.user.profile)
+        return Response(serializer.data)

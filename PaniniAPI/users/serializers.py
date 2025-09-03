@@ -27,3 +27,18 @@ class TelegramUserSerializer(serializers.ModelSerializer):
             'create_date',
             'profile'
         ]
+
+
+class FarmSerializer(serializers.ModelSerializer):
+    start_datatime_farm = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+    end_datetime_farm = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+
+    class Meta:
+        model = ProfileTelegramUser
+        fields = [
+            'is_farm',
+            'start_datatime_farm',
+            'end_datetime_farm',
+            'time_farm',
+            'coins'
+        ]

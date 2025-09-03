@@ -1,3 +1,6 @@
+import datetime
+from datetime import time
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.validators import MinValueValidator
@@ -84,6 +87,12 @@ class ProfileTelegramUser(models.Model):
         null=True,
         blank=True
     )
+    time_farm = models.TimeField(
+        verbose_name='Время фарма',
+        default=datetime.time(hour=8),
+        blank=True,
+        null=True
+    )
 
     @property
     def coins_available(self):
@@ -96,10 +105,11 @@ class ProfileTelegramUser(models.Model):
         print("Пытались забрать фарм!")
         return 0
 
-    def start_farm(self, duration_hours=8):
+    def start_farm(self):
         now = timezone.now()
+        print(f"Время сервера - {now}")
         self.start_datatime_farm = now
-        self.end_datetime_farm = now + timezone.timedelta(hours=duration_hours)
+        self.end_datetime_farm = now + timezone.timedelta(hours=self.time_farm.hour, minutes=self.time_farm.minute)
         self.is_farm = True
         self.save()
 

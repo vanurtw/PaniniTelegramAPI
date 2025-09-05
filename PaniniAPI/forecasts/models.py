@@ -42,3 +42,28 @@ class AnswerOption(models.Model):
     class Meta:
         verbose_name = "Вариант ответа"
         verbose_name_plural = "Варианты ответа"
+
+
+class UserForecasts(models.Model):
+    profile_user = models.ForeignKey(
+        ProfileTelegramUser,
+        verbose_name="Профиль пользователя",
+        on_delete=models.CASCADE,
+    )
+    forecast = models.ForeignKey(
+        Forecasts,
+        on_delete=models.CASCADE,
+        verbose_name="Прогноз"
+    )
+    answer_option = models.ForeignKey(
+        AnswerOption,
+        on_delete=models.CASCADE,
+        verbose_name="Вариант ответа"
+    )
+
+    def __str__(self):
+        return f"{self.profile_user} - {self.forecast}"
+
+    class Meta:
+        verbose_name = "Ответ Пользователя"
+        verbose_name_plural = "Ответы Пользователей"

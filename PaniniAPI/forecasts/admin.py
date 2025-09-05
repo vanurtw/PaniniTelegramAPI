@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Forecasts, AnswerOption
+from .models import Forecasts, AnswerOption, UserForecasts
 
 
 class ForecastInline(admin.TabularInline):
@@ -15,4 +15,9 @@ class ForecastsAdmin(admin.ModelAdmin):
 
 @admin.register(AnswerOption)
 class AnswerOptionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(UserForecasts)
+class UserForecastsAdmin(admin.ModelAdmin):
     pass

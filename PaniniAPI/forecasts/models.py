@@ -28,7 +28,8 @@ class AnswerOption(models.Model):
     forecast = models.ForeignKey(
         Forecasts,
         on_delete=models.CASCADE,
-        verbose_name='Прогноз'
+        verbose_name='Прогноз',
+        related_name='answer_options'
     )
     title = models.CharField(verbose_name='Заголовок', max_length=255)
     correct = models.BooleanField(
@@ -49,6 +50,7 @@ class UserForecasts(models.Model):
         ProfileTelegramUser,
         verbose_name="Профиль пользователя",
         on_delete=models.CASCADE,
+        related_name='user_forecasts'
     )
     forecast = models.ForeignKey(
         Forecasts,
@@ -60,10 +62,15 @@ class UserForecasts(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Вариант ответа"
     )
+    date_creation = models.DateField(
+        verbose_name='Дата создания',
+        auto_now_add=True
+    )
 
     def __str__(self):
         return f"{self.profile_user} - {self.forecast}"
 
     class Meta:
+        unique_together = ['profile_user', 'forecast']
         verbose_name = "Ответ Пользователя"
         verbose_name_plural = "Ответы Пользователей"

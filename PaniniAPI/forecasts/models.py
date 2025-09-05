@@ -17,12 +17,16 @@ class Forecasts(models.Model):
     )
 
     def __str__(self):
-        return f"Прогноз: {self.title[:15]}..."
+        return f"Прогноз: {self.title[:25]}..."
+
+    class Meta:
+        verbose_name = "Прогноз"
+        verbose_name_plural = "Прогнозы"
 
 
 class AnswerOption(models.Model):
     forecast = models.ForeignKey(
-        to='Forecasts',
+        Forecasts,
         on_delete=models.CASCADE,
         verbose_name='Прогноз'
     )
@@ -33,4 +37,8 @@ class AnswerOption(models.Model):
     )
 
     def __str__(self):
-        return f"Ответ: {self.forecast[:5]} - {self.title[:7]}..."
+        return f"Ответ: {str(self.forecast)[:30]} - {self.title[:10]}..."
+
+    class Meta:
+        verbose_name = "Вариант ответа"
+        verbose_name_plural = "Варианты ответа"

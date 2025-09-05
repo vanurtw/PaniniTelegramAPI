@@ -29,9 +29,8 @@ class ProfileTelegramUser(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class FarmStartUserAPIView(GenericAPIView):
+class FarmStartUserAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = None
 
     @swagger_auto_schema(
         operation_summary="Начать фарм",
@@ -75,6 +74,7 @@ class FarmStartUserAPIView(GenericAPIView):
 
 
 class FarmEndUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary="Прекратить фарм и забрать монеты",

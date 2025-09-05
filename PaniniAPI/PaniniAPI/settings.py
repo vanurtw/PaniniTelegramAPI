@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'teams',
     'purchase',
     'auth_users',
+    'forecasts',
     'rest_framework',
 ]
 

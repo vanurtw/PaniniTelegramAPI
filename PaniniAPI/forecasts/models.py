@@ -1,3 +1,36 @@
 from django.db import models
+from users.models import ProfileTelegramUser
 
-# Create your models here.
+
+class Forecasts(models.Model):
+    title = models.CharField(
+        verbose_name='Заголовок',
+        max_length=255
+    )
+    is_active = models.BooleanField(
+        verbose_name='Активный',
+        default=True
+    )
+    date_creation = models.DateField(
+        verbose_name='Дата создания',
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"Прогноз: {self.title[:15]}..."
+
+
+class AnswerOption(models.Model):
+    forecast = models.ForeignKey(
+        to='Forecasts',
+        on_delete=models.CASCADE,
+        verbose_name='Прогноз'
+    )
+    title = models.CharField(verbose_name='Заголовок', max_length=255)
+    correct = models.BooleanField(
+        verbose_name='Верный',
+        default=False
+    )
+
+    def __str__(self):
+        return f"Ответ: {self.forecast[:5]} - {self.title[:7]}..."

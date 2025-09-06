@@ -6,7 +6,7 @@ class AnswerOptionForecastUserMySerializer(serializers.ModelSerializer):
     user_answer = serializers.SerializerMethodField()
 
     def get_user_answer(self, instance):
-        return True
+        return instance.id == self.context.get("user_answer", None)
 
     class Meta:
         model = AnswerOption
@@ -22,7 +22,8 @@ class ForecastsMySerializer(serializers.ModelSerializer):
     answer_options = serializers.SerializerMethodField()
 
     def get_answer_options(self, instance):
-        serializer = AnswerOptionForecastUserMySerializer(instance.answer_options.all(), many=True)
+        serializer = AnswerOptionForecastUserMySerializer(instance.answer_options.all(), many=True,
+                                                          context=self.context)
         return serializer.data
 
     class Meta:
@@ -41,7 +42,8 @@ class UserMyForecastsReadSerializer(serializers.ModelSerializer):
     forecast = serializers.SerializerMethodField()
 
     def get_forecast(self, instance):
-        serializer = ForecastsMySerializer(instance.forecast)
+        context = {"user_answer": instance.answer_option.id}
+        serializer = ForecastsMySerializer(instance.forecast, context=context)
         return serializer.data
 
     class Meta:

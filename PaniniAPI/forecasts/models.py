@@ -46,6 +46,9 @@ class AnswerOption(models.Model):
 
 
 class UserForecasts(models.Model):
+    '''
+    одель ответов пользователя
+    '''
     profile_user = models.ForeignKey(
         ProfileTelegramUser,
         verbose_name="Профиль пользователя",

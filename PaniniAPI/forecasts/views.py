@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ForecastsSerializer, UserForecastsSerializer
+from .serializers import ForecastsSerializer, UserForecastsSerializer, UserMyForecastsReadSerializer
 from .models import Forecasts
 from django.db import IntegrityError
 from rest_framework import status
@@ -24,6 +24,11 @@ class ForecastsReadAPIView(GenericAPIView):
 class UserForecastsAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserForecastsSerializer
+
+    def get(self, request):
+        queryset = request.user.profile.user_forecasts.all()
+        serializer = UserMyForecastsReadSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         '''

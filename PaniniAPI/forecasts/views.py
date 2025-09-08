@@ -2,8 +2,9 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import ForecastsSerializer, UserForecastsSerializer, UserMyForecastsReadSerializer
-from .models import Forecasts
+from .models import Forecasts, UserForecasts
 from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.validators import ValidationError
 
@@ -26,13 +27,16 @@ class UserForecastsAPIView(GenericAPIView):
     serializer_class = UserForecastsSerializer
 
     def get(self, request):
+        '''
+        Получение прогнозов на которые пользовотель отвечал  с его ответами
+        '''
         queryset = request.user.profile.user_forecasts.all()
         serializer = UserMyForecastsReadSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         '''
-        обавить проверку на то чтобы пользователь не мог ответить на прогноз на который он уже отвечал с новым ответом
+        Добавить проверку на то чтобы пользователь не мог ответить на прогноз на который он уже отвечал с новым ответом
         '''
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -41,3 +45,19 @@ class UserForecastsAPIView(GenericAPIView):
         except IntegrityError:
             return Response({"detail": "Пользователь уже ответил на этот прогноз"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ForecastUserDetailAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserForecastsSerializer
+
+    def patch(self, request, pk):
+        '''
+        Обновить ответ пользователя на прогноз
+        '''
+        data = request.data
+        instance = get_object_or_404(UserForecasts, profile_user=request.user.profile, forecast__id=pk)
+        serializer = self.serializer_class(data=data, instance=instance, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)

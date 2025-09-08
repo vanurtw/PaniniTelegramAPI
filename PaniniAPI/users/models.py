@@ -25,7 +25,7 @@ class MyUserManager(UserManager):
 
 class TelegramUserModel(models.Model):
     '''
-    Модель пользователя телеграмм аккаунта
+    Модель пользователя телеграмм аккаунта - используется в app
     '''
     user_id = models.CharField(
         verbose_name='id пользователя аккаунта telegram',
@@ -166,9 +166,35 @@ class UserFootballerCollection(models.Model):
         verbose_name_plural = 'Коллекция'
 
 
+class UserFriends(models.Model):
+    user = models.ForeignKey(
+        TelegramUserModel,
+        on_delete=models.CASCADE,
+        related_name='friends',
+        verbose_name='Пользователь'
+    )
+    friend = models.ForeignKey(
+        TelegramUserModel,
+        on_delete=models.CASCADE,
+        verbose_name='Друг'
+    )
+    create_date = models.DateField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+
+    def __str__(self):
+        return f"{self.user} - {self.friend}"
+
+    class Meta:
+        unique_together = ['user', 'friend']
+        verbose_name = 'Друзья пользоваетя'
+        verbose_name_plural = 'Друзья пользоваетя'
+
+
 class MyUserModel(AbstractUser):
     '''
-    Модель пользователя
+    Модель пользователя - базовая
     '''
     username = None
     email = models.EmailField("email address", unique=True)

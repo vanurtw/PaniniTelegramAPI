@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TelegramUserModel, MyUserModel, UserFootballerCollection, ProfileTelegramUser
+from .models import TelegramUserModel, MyUserModel, UserFootballerCollection, ProfileTelegramUser, UserFriends
 
 
 @admin.register(TelegramUserModel)
@@ -19,4 +19,9 @@ class UserFootballerCollectionAdmin(admin.ModelAdmin):
 
 @admin.register(ProfileTelegramUser)
 class ProfileTelegramUserAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(UserFriends)
+class UserFriendsAdmin(admin.ModelAdmin):
     pass

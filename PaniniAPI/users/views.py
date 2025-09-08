@@ -2,10 +2,15 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import TelegramUserSerializer, FarmSerializer
+
+from auth_users.serializers import TelegramAuthSerializer
+from auth_users.services import TelegramAuthService
+from .serializers import TelegramUserSerializer, FarmSerializer, FriendSerializer, UserFriendsSerializer, \
+    TelegramUserFriendsSerializer
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from .models import TelegramUserModel, UserFriends
 
 
 class ProfileTelegramUser(GenericAPIView):
@@ -129,3 +134,36 @@ class FarmAPIView(GenericAPIView):
     def get(self, request):
         serializer = self.serializer_class(request.user.profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserFriendsAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FriendSerializer
+
+    def get(self, request):
+        '''Надо будет оптимизировать этот запрос'''
+        query = TelegramUserModel.objects.filter(id__in=request.user.friends.all().values('friend'))
+
+        serializer = self.serializer_class(query, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        '''
+        Должени принимать InitData текущего пользователя
+        и telegram_user_id_friend пользователя по чьей ссылке он перешел
+        '''
+        serializer = TelegramUserFriendsSerializer(data=request.data)
+        if serializer.is_valid():
+            user_data = serializer.validated_data['user_data']
+            telegram_user = TelegramAuthService.create_or_get_telegram_user(user_data)
+            telegram_user_friend = TelegramUserModel.objects.get(id=request.data["telegram_user_id_friend"])
+            try:
+                UserFriends.objects.create(user=telegram_user, friend=telegram_user_friend)
+                UserFriends.objects.create(user=telegram_user_friend, friend=telegram_user)
+            except Exception as ex:
+                return Response({"detail": str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Added as friends"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Надо добавить обновление профиля при входе
+# Надо будет добавить удаление из друзей, поиск друзей по имени, id и добавление баллов при закрытии прогноза

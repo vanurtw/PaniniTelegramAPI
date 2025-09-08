@@ -4,12 +4,11 @@ import hmac
 import hashlib
 import json
 from django.conf import settings
-from users.serializers import TelegramUserSerializer
 
 
-class LoginResponseSerializer(serializers.Serializer):
-    token = serializers.CharField(required=True)
-    user = TelegramUserSerializer()
+# class LoginResponseSerializer(serializers.Serializer):
+#     token = serializers.CharField(required=True)
+#     user = TelegramUserSerializer()
 
 
 class TelegramAuthSerializer(serializers.Serializer):

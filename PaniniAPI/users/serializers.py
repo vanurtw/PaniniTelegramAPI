@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import ProfileTelegramUser, TelegramUserModel
+
+from auth_users.serializers import TelegramAuthSerializer
+from .models import ProfileTelegramUser, TelegramUserModel, UserFriends
 
 
 class ProfileUserSerializer(serializers.ModelSerializer):
@@ -21,6 +23,7 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         model = TelegramUserModel
         fields = [
             'id',
+            'user_id',
             'username',
             'first_name',
             'last_name',
@@ -41,4 +44,34 @@ class FarmSerializer(serializers.ModelSerializer):
             'end_datetime_farm',
             'time_farm',
             'coins'
+        ]
+
+
+class FriendSerializer(serializers.ModelSerializer):
+    coins = serializers.CharField(source='profile.coins')
+
+    class Meta:
+        model = TelegramUserModel
+        fields = [
+            'user_id',
+            'username',
+            'coins'
+        ]
+
+
+class TelegramUserFriendsSerializer(TelegramAuthSerializer):
+    '''
+    Сериализатор который обрабатывет данные при добавление друга в список друзей
+    '''
+    telegram_user_id_friend = serializers.PrimaryKeyRelatedField(queryset=TelegramUserModel.objects.all())
+
+
+class UserFriendsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFriends
+        fields = [
+            'id',
+            'user',
+            'friend',
+            'create_date'
         ]

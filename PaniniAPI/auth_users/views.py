@@ -1,6 +1,8 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from .serializers import TelegramAuthSerializer, LoginResponseSerializer
+
+from .serializer_log import LoginResponseSerializer
+from .serializers import TelegramAuthSerializer
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi

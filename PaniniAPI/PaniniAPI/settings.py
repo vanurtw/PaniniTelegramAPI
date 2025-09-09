@@ -12,7 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+
+SECRET_KEY='django-insecure-h)n*ythv99aov7ya^&_e7o90t6^vl3sp&g0%rlf3y^!@4*z968'
+# SECRET_KEY = os.getenv("SECRET_KEY")
 TELEGRAM_BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # SECURITY WARNING: don't run with debug turned on in production!

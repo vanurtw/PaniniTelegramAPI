@@ -6,7 +6,6 @@ from .models import Forecasts, UserForecasts
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.validators import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -116,6 +115,26 @@ class UserForecastsAPIView(GenericAPIView):
         serializer = UserMyForecastsReadSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        operation_summary='Ответить на пргоноз',
+        operation_description='Ответить на прогноз. Доступен только для авторизованных пользователей',
+        responses={
+            200: serializer_class(),
+            400: openapi.Response(
+                description='Ошибка валидации',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Ошибка валидации"),
+                    }
+                )
+            ),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Прогнозы"]
+    )
     def post(self, request):
         '''
         Добавить проверку на то чтобы пользователь не мог ответить на прогноз на который он уже отвечал с новым ответом
@@ -133,6 +152,29 @@ class ForecastUserDetailAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserForecastsSerializer
 
+    @swagger_auto_schema(
+        operation_summary="Обновить ответ пользователя на прогноз",
+        operation_description='''
+        Обновить ответ пользователя на прогноз.
+        Доступно только для авторизованыых пользователей.
+        ''',
+        responses={
+            200: serializer_class(),
+            404: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description='Объект не найден',
+                properties={
+                    "detail": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Описание ошибки"
+                    ),
+                }
+            ),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Прогнозы"]
+
+    )
     def patch(self, request, pk):
         '''
         Обновить ответ пользователя на прогноз
@@ -142,4 +184,4 @@ class ForecastUserDetailAPIView(GenericAPIView):
         serializer = self.serializer_class(data=data, instance=instance, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)

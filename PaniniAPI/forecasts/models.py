@@ -3,9 +3,17 @@ from users.models import ProfileTelegramUser
 
 
 class Forecasts(models.Model):
+    '''
+    Модель прогнозов
+    '''
+
     title = models.CharField(
         verbose_name='Заголовок',
         max_length=255
+    )
+    completed = models.BooleanField(
+        verbose_name='Завершен',
+        default=False
     )
     is_active = models.BooleanField(
         verbose_name='Активный',
@@ -25,6 +33,9 @@ class Forecasts(models.Model):
 
 
 class AnswerOption(models.Model):
+    '''
+    Модель ответов на прогнозы
+    '''
     forecast = models.ForeignKey(
         Forecasts,
         on_delete=models.CASCADE,
@@ -58,7 +69,8 @@ class UserForecasts(models.Model):
     forecast = models.ForeignKey(
         Forecasts,
         on_delete=models.CASCADE,
-        verbose_name="Прогноз"
+        verbose_name="Прогноз",
+        related_name='forecasts_answer_user'
     )
     answer_option = models.ForeignKey(
         AnswerOption,

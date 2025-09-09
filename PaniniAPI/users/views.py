@@ -137,6 +137,18 @@ class UserFriendsAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = FriendSerializer
 
+    @swagger_auto_schema(
+        operation_summary="Получить список друзей пользователя",
+        operation_description='''
+        Получить список друзей пользователя.
+        Доступно только для авторизованных пользователей.
+        ''',
+        responses={
+            200: serializer_class(),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Друзья"]
+    )
     def get(self, request):
         '''Надо будет оптимизировать этот запрос'''
         query = TelegramUserModel.objects.filter(id__in=request.user.friends.all().values('friend'))
@@ -144,6 +156,29 @@ class UserFriendsAPIView(GenericAPIView):
         serializer = self.serializer_class(query, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        operation_summary="Добавить пользователя в друзья",
+        operation_description='''
+        Добавить пользователя в друзья.
+        Должен срабатывать при переходе по реферадьной ссылке.
+        ''',
+        responses={
+            200: openapi.Response(
+                description='The farm was assembled',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'detail': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Added as friends/Пользователь добавлен в друзья"
+                        ),
+                    }
+                )
+            ),
+            401: openapi.Response(description='Пользователь не авторизован')
+        },
+        tags=["Друзья"]
+    )
     def post(self, request):
         '''
         Должени принимать InitData текущего пользователя
@@ -161,8 +196,6 @@ class UserFriendsAPIView(GenericAPIView):
                 return Response({"detail": str(ex)}, status=status.HTTP_400_BAD_REQUEST)
             return Response({"detail": "Added as friends"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 # Надо добавить обновление профиля при входе
 # Надо будет добавить удаление из друзей, поиск друзей по имени, id и добавление баллов при закрытии прогноза

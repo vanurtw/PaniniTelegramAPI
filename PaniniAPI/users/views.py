@@ -2,11 +2,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-
-from auth_users.serializers import TelegramAuthSerializer
 from auth_users.services import TelegramAuthService
-from .serializers import TelegramUserSerializer, FarmSerializer, FriendSerializer, UserFriendsSerializer, \
-    TelegramUserFriendsSerializer
+from .serializers import TelegramUserSerializer, FarmSerializer, FriendSerializer, TelegramUserFriendsSerializer
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -164,6 +161,8 @@ class UserFriendsAPIView(GenericAPIView):
                 return Response({"detail": str(ex)}, status=status.HTTP_400_BAD_REQUEST)
             return Response({"detail": "Added as friends"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 # Надо добавить обновление профиля при входе
 # Надо будет добавить удаление из друзей, поиск друзей по имени, id и добавление баллов при закрытии прогноза

@@ -7,12 +7,26 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.validators import ValidationError
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class ForecastsReadAPIView(GenericAPIView):
     serializer_class = ForecastsSerializer
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_summary="Получение всех пргнозов, возвращаются только активные прогнозы",
+        operation_description='''
+        Получение всех пргнозов с вариантами ответов, возвращаются только активные прогнозы.
+        Доступно только  для авторизованных пользователей.
+        ''',
+        responses={
+            200: serializer_class(),
+            401: openapi.Response(description="Пользователь не авторизован")
+        },
+        tags=["Прогнозы"]
+    )
     def get(self, request):
         '''
         Надо будет исключить прогнрозы на которые пользовательуже дал ответы
@@ -26,6 +40,74 @@ class UserForecastsAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserForecastsSerializer
 
+    @swagger_auto_schema(
+        operation_summary="Получение прогнозов на которые отвечал пользователь",
+        operation_description='''
+        Получение прогнозов с ответами и его ответом помеченным как флаг - user_answer -  на которые отвечал пользователь.
+        Доступно только для авторизованных пользователей.
+        ''',
+        responses={
+            200: openapi.Response(
+                description='Фарм начат',
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "id": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="id записи"
+                        ),
+                        "date_creation": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            format=openapi.FORMAT_DATETIME,
+                            description='Дата создания записи'
+                        ),
+                        "forecast": openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={"title": openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                description='Заголовок прогноза'
+                            ),
+                                "is_active": openapi.Schema(
+                                    type=openapi.TYPE_BOOLEAN,
+                                    description='Флаг активен ли прогноз'
+                                ),
+                                "date_creation": openapi.Schema(
+                                    type=openapi.TYPE_STRING,
+                                    format=openapi.FORMAT_DATETIME,
+                                    description='Дата создания прогноза'
+                                ),
+                                "answer_options": openapi.Schema(
+                                    type=openapi.TYPE_OBJECT,
+                                    properties={
+                                        "id": openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="id записи"
+                                        ),
+                                        "title": openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description='Заголовок ответа'
+                                        ),
+                                        "correct": openapi.Schema(
+                                            type=openapi.TYPE_BOOLEAN,
+                                            description='Флаг правильного ответа'
+                                        ),
+                                        "user_answer": openapi.Schema(
+                                            type=openapi.TYPE_BOOLEAN,
+                                            description='Флаг ответа пользователя'
+                                        ),
+                                    }
+                                )
+                            }
+                        ),
+
+                    }
+                )
+
+            ),
+            401: openapi.Response(description="Пользователь не авторизован")
+        },
+        tags=["Прогнозы"]
+    )
     def get(self, request):
         '''
         Получение прогнозов на которые пользовотель отвечал  с его ответами

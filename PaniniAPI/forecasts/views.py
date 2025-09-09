@@ -30,7 +30,10 @@ class ForecastsReadAPIView(GenericAPIView):
         '''
         Надо будет исключить прогнрозы на которые пользовательуже дал ответы
         '''
-        data = Forecasts.objects.filter(is_active=True)
+        if request.query_params.get("completed", None):
+            data = Forecasts.objects.filter(is_active=True, completed=False)
+        else:
+            data = Forecasts.objects.filter(is_active=True)
         serializer = self.serializer_class(data, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

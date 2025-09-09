@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,8 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h)n*ythv99aov7ya^&_e7o90t6^vl3sp&g0%rlf3y^!@4*z968'
-TELEGRAM_BOT_TOKEN = '6123456789:AAHdF6IQAAAAAN0XohD4Ork_abcdefghijk123456789'
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+TELEGRAM_BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -105,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'users.MyUserModel'
 
-
 CORS_ALLOW_ALL_ORIGINS = True
 
 LANGUAGE_CODE = 'en-us'
@@ -116,12 +120,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-
 STATIC_URL = 'static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

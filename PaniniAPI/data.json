@@ -1,0 +1,247 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "4qajnzp7zj0j4559xi43w38k8uv5ze7j",
+  "fields": {
+    "session_data": ".eJxVjLsKwzAMAP_FczEWUWyrY_d-g5Elu0lbEshjCv33YsjQrnfHHSbxvg1pX8uSRjVXA-byyzLLq0xN6JOnx2xlnrZlzLYl9rSrvc9a3rez_RsMvA5tW5EUEYXJxRoq-wAkvg_qCEpkyOCxC1Rrhk40CxJ1kbQHdBExms8X1tQ3MQ:1uuSVl:1ZFfOh-N7NaufK8TsfX8p2UpsEbCYvc-vGjz3_GCvCw",
+    "expire_date": "2025-09-19T09:13:37.717Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f4ll09oi6pfcz7cxklwzfpqmzslxnbg8",
+  "fields": {
+    "session_data": ".eJxVjLsKwzAMAP_FczEWUWyrY_d-g5Elu0lbEshjCv33YsjQrnfHHSbxvg1pX8uSRjVXA-byyzLLq0xN6JOnx2xlnrZlzLYl9rSrvc9a3rez_RsMvA5tW5EUEYXJxRoq-wAkvg_qCEpkyOCxC1Rrhk40CxJ1kbQHdBExms8X1tQ3MQ:1uqssm:mOLrjEOAUnwc3JR_MXdgfZWJXUPrXlzYRqv7ipKcWCc",
+    "expire_date": "2025-09-09T12:34:36.029Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nixru46t4rnfzlpjev0rkkl8pxbufdfx",
+  "fields": {
+    "session_data": ".eJxVjLsKwzAMAP_FczEWUWyrY_d-g5Elu0lbEshjCv33YsjQrnfHHSbxvg1pX8uSRjVXA-byyzLLq0xN6JOnx2xlnrZlzLYl9rSrvc9a3rez_RsMvA5tW5EUEYXJxRoq-wAkvg_qCEpkyOCxC1Rrhk40CxJ1kbQHdBExms8X1tQ3MQ:1utjJU:hVg_jKbQv_tOw55TK4_AkTSlFNipNqOLAeo5DAQ62Ws",
+    "expire_date": "2025-09-17T08:57:56.066Z"
+  }
+},
+{
+  "model": "users.telegramusermodel",
+  "pk": 2,
+  "fields": {
+    "user_id": "123456789",
+    "username": "johndoe",
+    "first_name": "John",
+    "last_name": "Doe",
+    "create_date": "2025-08-28"
+  }
+},
+{
+  "model": "users.telegramusermodel",
+  "pk": 3,
+  "fields": {
+    "user_id": "1111111",
+    "username": "test",
+    "first_name": "test",
+    "last_name": "test",
+    "create_date": "2025-09-08"
+  }
+},
+{
+  "model": "users.telegramusermodel",
+  "pk": 4,
+  "fields": {
+    "user_id": "415125125",
+    "username": "test2",
+    "first_name": "awdawd",
+    "last_name": "awd",
+    "create_date": "2025-09-08"
+  }
+},
+{
+  "model": "users.profiletelegramuser",
+  "pk": 1,
+  "fields": {
+    "telegram_user": 2,
+    "coins": 96000,
+    "is_farm": false,
+    "start_datatime_farm": null,
+    "end_datetime_farm": null,
+    "time_farm": "08:00:00"
+  }
+},
+{
+  "model": "users.profiletelegramuser",
+  "pk": 2,
+  "fields": {
+    "telegram_user": 3,
+    "coins": 1110,
+    "is_farm": false,
+    "start_datatime_farm": null,
+    "end_datetime_farm": null,
+    "time_farm": "08:00:00"
+  }
+},
+{
+  "model": "users.profiletelegramuser",
+  "pk": 3,
+  "fields": {
+    "telegram_user": 4,
+    "coins": 0,
+    "is_farm": false,
+    "start_datatime_farm": null,
+    "end_datetime_farm": null,
+    "time_farm": "08:00:00"
+  }
+},
+{
+  "model": "users.userfootballercollection",
+  "pk": 5,
+  "fields": {
+    "telegram_user": 1,
+    "player": 10,
+    "obtained_date": "2025-09-02"
+  }
+},
+{
+  "model": "users.userfootballercollection",
+  "pk": 6,
+  "fields": {
+    "telegram_user": 1,
+    "player": 7,
+    "obtained_date": "2025-09-02"
+  }
+},
+{
+  "model": "users.userfriends",
+  "pk": 7,
+  "fields": {
+    "user": 2,
+    "friend": 3,
+    "create_date": "2025-09-08"
+  }
+},
+{
+  "model": "users.userfriends",
+  "pk": 8,
+  "fields": {
+    "user": 3,
+    "friend": 2,
+    "create_date": "2025-09-08"
+  }
+},
+{
+  "model": "users.myusermodel",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$1tnQA9tHXY9li29lfF5bX9$F6SQQc+Qt33sKbOW7gaXvjLdhCPFD6m+t6gf3SMMeVs=",
+    "last_login": "2025-09-05T09:13:37.712Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-26T12:34:19.988Z",
+    "email": "admin@admin.ru",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "teams.club",
+  "pk": 1,
+  "fields": {
+    "name": "PSG",
+    "founded": 1900,
+    "slug": "psg"
+  }
+},
+{
+  "model": "teams.club",
+  "pk": 2,
+  "fields": {
+    "name": "Арсенал",
+    "founded": 1900,
+    "slug": "arsenal"
+  }
+},
+{
+  "model": "teams.club",
+  "pk": 3,
+  "fields": {
+    "name": "Спартак",
+    "founded": 1900,
+    "slug": "spartak"
+  }
+},
+{
+  "model": "teams.player",
+  "pk": 7,
+  "fields": {
+    "name": "Аршавин",
+    "club": 2,
+    "position": "FW",
+    "status_card": "NOR",
+    "number": 99,
+    "birth_date": "2025-09-01",
+    "photo": "clubs/arsenal/arshavkin.jpg"
+  }
+},
+{
+  "model": "teams.player",
+  "pk": 10,
+  "fields": {
+    "name": "Мбаппе",
+    "club": 1,
+    "position": "FW",
+    "status_card": "NOR",
+    "number": 23,
+    "birth_date": "2025-09-01",
+    "photo": "clubs/PSG/mbappe_18.jpg"
+  }
+},
+{
+  "model": "auth_users.token",
+  "pk": "50b9deddf59af1f09b863447768052920d6220df",
+  "fields": {
+    "user_telegram": 2,
+    "created": "2025-08-28T10:57:14.138Z"
+  }
+},
+{
+  "model": "forecasts.forecasts",
+  "pk": 1,
+  "fields": {
+    "title": "Кто я",
+    "completed": false,
+    "is_active": true,
+    "date_creation": "2025-09-05"
+  }
+},
+{
+  "model": "forecasts.answeroption",
+  "pk": 1,
+  "fields": {
+    "forecast": 1,
+    "title": "прогр",
+    "correct": false
+  }
+},
+{
+  "model": "forecasts.answeroption",
+  "pk": 2,
+  "fields": {
+    "forecast": 1,
+    "title": "чушпан",
+    "correct": false
+  }
+},
+{
+  "model": "forecasts.userforecasts",
+  "pk": 1,
+  "fields": {
+    "profile_user": 1,
+    "forecast": 1,
+    "answer_option": 2,
+    "date_creation": "2025-09-05"
+  }
+}
+]

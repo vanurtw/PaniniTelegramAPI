@@ -32,6 +32,7 @@ class ForecastsMySerializer(serializers.ModelSerializer):
             'id',
             'title',
             'is_active',
+            'completed',
             'date_creation',
             'answer_options'
 
@@ -87,6 +88,7 @@ class ForecastsSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'is_active',
+            'completed',
             'date_creation',
             'answer_options'
         ]
